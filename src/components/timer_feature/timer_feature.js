@@ -23,11 +23,7 @@ export class TimerFeature {
         const timerDiv = document.createElement("div");
         timerDiv.id = "timer";
 
-        // hours, minutes, seconds spans
-        const hoursSpan = document.createElement("span");
-        hoursSpan.id = "hours";
-        hoursSpan.textContent = "00";
-
+        // minutes, seconds spans
         const minutesSpan = document.createElement("span");
         minutesSpan.id = "minutes";
         minutesSpan.textContent = "00";
@@ -36,9 +32,7 @@ export class TimerFeature {
         secondsSpan.id = "seconds";
         secondsSpan.textContent = "00";
 
-        // add hours, minutes, and span
-        timerDiv.appendChild(hoursSpan);
-        timerDiv.appendChild(document.createTextNode(" Hours "));
+        // add minutes and seconds
         timerDiv.appendChild(minutesSpan);
         timerDiv.appendChild(document.createTextNode(" Minutes "));
         timerDiv.appendChild(secondsSpan);
