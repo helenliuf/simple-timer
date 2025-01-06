@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node src/main.js"
+    "start": "http-server src -p 3000 -c-1 -o -s"
   },
   "author": "",
   "dependencies": {
