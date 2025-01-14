@@ -10,7 +10,7 @@ export class TimerFeature {
         document.head.appendChild(styleSheet);
     }
 
-    setInterval(){
+    getInterval(){
         try{
             const minutes = parseInt(document.getElementById("minute-input").value) || 0;
             const seconds = parseInt(document.getElementById("second-input").value) || 0;
@@ -50,6 +50,28 @@ export class TimerFeature {
 
     }
 
+    playDing(){
+        // create audio object
+        const audio = new Audio("./resources/audio/ding.mp3");
+
+        //play audio
+        audio.play().catch(e => {
+            console.error("error playing ding audio:", e);
+        });
+    }
+
+    startCountdown(interval){
+        let totalSeconds = interval;
+        let timerInterval = setInterval(() => {
+            if (totalSeconds <= 0) {
+                totalSeconds = interval;
+                this.playDing();
+            }
+            this.updateDisplay(totalSeconds);
+            totalSeconds--;
+        }, 1000);
+    }
+
     render() {
         // full container
         const fullContainer = document.createElement("div");
@@ -84,15 +106,15 @@ export class TimerFeature {
 
         let interval = undefined;
         checkIcon.addEventListener('click', () => {
-            interval = this.setInterval();
+            interval = this.getInterval();
             if (interval){
                 this.updateDisplay(interval);
             }
         });
 
-        inputContainer.append(minutesInput);
-        inputContainer.append(secondsInput);
-        inputContainer.append(checkIcon);
+        inputContainer.appendChild(minutesInput);
+        inputContainer.appendChild(secondsInput);
+        inputContainer.appendChild(checkIcon);
 
         fullContainer.appendChild(inputContainer);
 
@@ -101,8 +123,30 @@ export class TimerFeature {
         timerContainer.id = "timer";
         timerContainer.textContent = `${String(0).padStart(2, '0')} : ${String(0).padStart(2, '0')}`;
 
-        fullContainer.append(timerContainer);
+        fullContainer.appendChild(timerContainer);
 
+        const controls = document.createElement('div');
+        controls.id = "control-container";
+
+        const start = document.createElement('img');
+        start.id = "start-icon";
+        start.src = "./resources/images/play.png";
+        //TODO: move to css
+        start.style.cursor = "pointer";
+        start.style.width = "25px";
+        start.style.height = "25px";
+
+        let countdown = false;
+        start.addEventListener('click', () => {
+            if (interval && !countdown){
+                countdown = true;
+                //start.src = "./resources/images/pause.png";
+                this.startCountdown(interval);
+            } 
+        })
+
+        controls.appendChild(start);
+        fullContainer.appendChild(controls);
 
         return fullContainer;
     }
