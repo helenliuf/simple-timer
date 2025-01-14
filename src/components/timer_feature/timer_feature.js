@@ -67,6 +67,7 @@ export class TimerFeature {
             this.totalSeconds = totalSeconds;
             if (totalSeconds <= 0) {
                 this.playDing();
+                this.changeTimerSize();
                 totalSeconds = interval+1;
             }
             totalSeconds--;
@@ -77,6 +78,15 @@ export class TimerFeature {
 
     stopCountdown(){
         clearInterval(this.timerInterval);
+    }
+
+    changeTimerSize(){
+        const timerDisplay = document.getElementById("timer");
+        timerDisplay.style.fontSize = "68px";
+
+        setTimeout(() => {
+            timerDisplay.style.fontSize = "60px";
+        }, 350)
     }
 
     render() {
@@ -105,11 +115,8 @@ export class TimerFeature {
 
         const checkIcon = document.createElement('img');
         checkIcon.id = "check-icon";
+        checkIcon.className = "custom-icon";
         checkIcon.src = "./resources/images/checked.png";
-        //TODO: move to css
-        checkIcon.style.cursor = "pointer";
-        checkIcon.style.width = "25px";
-        checkIcon.style.height = "25px";
 
         let interval = undefined;
         checkIcon.addEventListener('click', () => {
@@ -121,27 +128,25 @@ export class TimerFeature {
 
         inputContainer.appendChild(minutesInput);
         inputContainer.appendChild(secondsInput);
-        inputContainer.appendChild(checkIcon);
-
+        
         fullContainer.appendChild(inputContainer);
+        fullContainer.appendChild(checkIcon);
 
         // timer container
-        const timerContainer = document.createElement("div");
-        timerContainer.id = "timer";
-        timerContainer.textContent = `${String(0).padStart(2, '0')} : ${String(0).padStart(2, '0')}`;
+        const timerDisplay = document.createElement("div");
+        timerDisplay.id = "timer";
+        timerDisplay.textContent = `${String(0).padStart(2, '0')} : ${String(0).padStart(2, '0')}`;
 
-        fullContainer.appendChild(timerContainer);
+        fullContainer.appendChild(timerDisplay);
 
         const controls = document.createElement('div');
         controls.id = "control-container";
 
         const start = document.createElement('img');
         start.id = "start-icon";
+        start.className = "custom-icon";
+        start.class = "icons";
         start.src = "./resources/images/play.png";
-        //TODO: move to css
-        start.style.cursor = "pointer";
-        start.style.width = "25px";
-        start.style.height = "25px";
 
         let countdown = false;
         start.addEventListener('click', () => {
@@ -157,12 +162,9 @@ export class TimerFeature {
         })
 
         const restart = document.createElement('img');
-        restart.id = "start-icon";
+        restart.id = "restart-icon";
+        restart.className = "custom-icon";
         restart.src = "./resources/images/refresh.png";
-        //TODO: move to css
-        restart.style.cursor = "pointer";
-        restart.style.width = "23px";
-        restart.style.height = "23px";
 
         restart.addEventListener('click', () => {
             if(interval){
@@ -170,11 +172,16 @@ export class TimerFeature {
                 start.src = "./resources/images/play.png";
                 this.stopCountdown();
                 this.updateDisplay(interval)
+                this.totalSeconds = 0;
             }
         });
 
         controls.appendChild(start);
         controls.appendChild(restart);
+
+        const spacer = document.createElement("div");
+        spacer.class = "spacer";
+        fullContainer.append(spacer);
         fullContainer.appendChild(controls);
 
         return fullContainer;
