@@ -1,6 +1,8 @@
 export class TimerFeature {
     constructor() {
         this.loadCSS();
+        this.totalSeconds = 0;
+        this.timerInterval = null;
     }    
 
     loadCSS() {
@@ -33,15 +35,14 @@ export class TimerFeature {
 
     updateDisplay(interval){
         try{
+            const timerDisplay = document.getElementById("timer");
             if (interval){
                 let seconds = interval % 60;
                 let minutes = Math.floor(interval / 60);
-    
-                const timerDisplay = document.getElementById("timer");
                 timerDisplay.textContent = `${String(minutes).padStart(2, '0')} : ${String(seconds).padStart(2, '0')}`;
-                return;
+            } else {
+                timerDisplay.textContent = `${String(0).padStart(2, '0')} : ${String(0).padStart(2, '0')}`;
             }
-            alert("Please enter a valid interval.");
             return;
         } catch (e){
             console.error(e);
@@ -52,7 +53,7 @@ export class TimerFeature {
 
     playDing(){
         // create audio object
-        const audio = new Audio("./resources/audio/ding.mp3");
+        const audio = new Audio("./resources/audio/ding2.mp3");
 
         //play audio
         audio.play().catch(e => {
@@ -60,16 +61,22 @@ export class TimerFeature {
         });
     }
 
-    startCountdown(interval){
-        let totalSeconds = interval;
-        let timerInterval = setInterval(() => {
+    startCountdown(startSeconds, interval){
+        let totalSeconds = startSeconds;
+        this.timerInterval = setInterval(() => {
+            this.totalSeconds = totalSeconds;
             if (totalSeconds <= 0) {
-                totalSeconds = interval;
                 this.playDing();
+                totalSeconds = interval+1;
             }
-            this.updateDisplay(totalSeconds);
             totalSeconds--;
+            this.updateDisplay(totalSeconds);
+            
         }, 1000);
+    }
+
+    stopCountdown(){
+        clearInterval(this.timerInterval);
     }
 
     render() {
@@ -140,12 +147,34 @@ export class TimerFeature {
         start.addEventListener('click', () => {
             if (interval && !countdown){
                 countdown = true;
-                //start.src = "./resources/images/pause.png";
-                this.startCountdown(interval);
-            } 
+                start.src = "./resources/images/pause.png";
+                this.startCountdown(this.totalSeconds > 0 ? this.totalSeconds : interval, interval);
+            } else if (countdown){
+                countdown = false;
+                this.stopCountdown();
+                start.src = "./resources/images/play.png";
+            }
         })
 
+        const restart = document.createElement('img');
+        restart.id = "start-icon";
+        restart.src = "./resources/images/refresh.png";
+        //TODO: move to css
+        restart.style.cursor = "pointer";
+        restart.style.width = "23px";
+        restart.style.height = "23px";
+
+        restart.addEventListener('click', () => {
+            if(interval){
+                countdown = false;
+                start.src = "./resources/images/play.png";
+                this.stopCountdown();
+                this.updateDisplay(interval)
+            }
+        });
+
         controls.appendChild(start);
+        controls.appendChild(restart);
         fullContainer.appendChild(controls);
 
         return fullContainer;
