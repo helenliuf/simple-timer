@@ -11,19 +11,43 @@ export class TimerFeature {
     }
 
     setInterval(){
-        const minutes = document.getElementById("minute-input").value;
-        const seconds = document.getElementById("second-input").value;
+        try{
+            const minutes = parseInt(document.getElementById("minute-input").value) || 0;
+            const seconds = parseInt(document.getElementById("second-input").value) || 0;
 
-        if (minutes && seconds){
-            let totalSeconds = minutes * 60 + seconds;
-            if (totalSeconds == 0){
-                alert("Interval must be more than 0 seconds.");
-                return;
-            } 
-            return totalSeconds;
+            if (minutes || seconds){
+                let totalSeconds = minutes * 60 + seconds;
+                if (totalSeconds == 0){
+                    alert("Interval must be more than 0 seconds.");
+                    return;
+                } 
+                return totalSeconds;
+            }
+            alert("Please enter a valid number of minutes and/or seconds!")
+            return;
+        } catch (e){
+            alert(e);
+            return;
         }
-        alert("Please enter a valid number of minutes and/or seconds!")
-        return;
+    }
+
+    updateDisplay(interval){
+        try{
+            if (interval){
+                let seconds = interval % 60;
+                let minutes = Math.floor(interval / 60);
+    
+                const timerDisplay = document.getElementById("timer");
+                timerDisplay.textContent = `${String(minutes).padStart(2, '0')} : ${String(seconds).padStart(2, '0')}`;
+                return;
+            }
+            alert("Please enter a valid interval.");
+            return;
+        } catch (e){
+            console.error(e);
+            return;
+        }
+
     }
 
     render() {
@@ -48,7 +72,7 @@ export class TimerFeature {
         secondsInput.type = "number";
         secondsInput.value = 0;
         secondsInput.min = 0;
-        secondsInput.max = 59;
+        secondsInput.max = 60;
 
         const checkIcon = document.createElement('img');
         checkIcon.id = "check-icon";
@@ -61,6 +85,9 @@ export class TimerFeature {
         let interval = undefined;
         checkIcon.addEventListener('click', () => {
             interval = this.setInterval();
+            if (interval){
+                this.updateDisplay(interval);
+            }
         });
 
         inputContainer.append(minutesInput);
@@ -71,28 +98,9 @@ export class TimerFeature {
 
         // timer container
         const timerContainer = document.createElement("div");
-        timerContainer.id = "timer-container";
+        timerContainer.id = "timer";
+        timerContainer.textContent = `${String(0).padStart(2, '0')} : ${String(0).padStart(2, '0')}`;
 
-        // timer div
-        const timerDiv = document.createElement("div");
-        timerDiv.id = "timer";
-
-        // minutes, seconds spans
-        const minutesSpan = document.createElement("span");
-        minutesSpan.id = "minutes";
-        minutesSpan.textContent = "00";
-
-        const secondsSpan = document.createElement("span");
-        secondsSpan.id = "seconds";
-        secondsSpan.textContent = "00";
-
-        // add minutes and seconds
-        timerDiv.appendChild(minutesSpan);
-        timerDiv.appendChild(document.createTextNode(" Minutes "));
-        timerDiv.appendChild(secondsSpan);
-        timerDiv.appendChild(document.createTextNode(" Seconds"));
-
-        timerContainer.appendChild(timerDiv);
         fullContainer.append(timerContainer);
 
 
