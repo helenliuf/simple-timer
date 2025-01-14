@@ -3,13 +3,20 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 50px;
 }
+
+h1 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 60px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
 #timer {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 100px;
+    margin-top: 95px;
     margin-bottom: 30px;
     font-size: 60px;
     width: 400px;
@@ -33,26 +40,29 @@
 
 input[type="number"] {
     width: 80px;
-    padding: 5px 10px; /* Add padding for a clean look */
-    font-size: 17px; /* Font size for readability */
-    border: 2px solid rgb(34, 34, 34); /* Default border */
-    border-radius: 6px; /* Rounded corners */
-    outline: none; /* Remove outline */
-    text-align: center; /* Center the text */
-    appearance: textfield; /* Remove default spinner */
+    padding: 5px 10px; 
+    font-size: 17px; 
+    border: 2px solid rgb(95, 94, 94); 
+    border-radius: 6px; 
+    outline: none; 
+    text-align: center; 
+    appearance: textfield; 
     margin: 10px;
     margin-bottom: 20px;
 }
 
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none; /* Disable spinners */
+    -webkit-appearance: none;
     margin: 0;
 }
 
 input[type="number"]:focus {
-    border-color: #000000; /* Highlight border color */
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Add a glow effect */
+    border-color: #000000; 
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
-
+#gif {
+    margin-top: 80px;
+    height: 150px;
+}

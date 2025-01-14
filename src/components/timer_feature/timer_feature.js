@@ -94,6 +94,10 @@ export class TimerFeature {
         const fullContainer = document.createElement("div");
         fullContainer.id = "full-container"
 
+        const header = document.createElement("h1");
+        header.textContent = "SIMPLE TIMER"
+        fullContainer.appendChild(header);
+
         // input container
         const inputContainer = document.createElement("div");
         inputContainer.id = "input-container"
@@ -178,11 +182,14 @@ export class TimerFeature {
 
         controls.appendChild(start);
         controls.appendChild(restart);
-
-        const spacer = document.createElement("div");
-        spacer.class = "spacer";
-        fullContainer.append(spacer);
         fullContainer.appendChild(controls);
+
+        // add gif
+        const gif = document.createElement("img");
+        gif.id = "gif";
+        gif.src = "./resources/images/swing.gif";
+
+        fullContainer.appendChild(gif);
 
         return fullContainer;
     }
