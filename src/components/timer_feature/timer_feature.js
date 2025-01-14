@@ -53,7 +53,7 @@ export class TimerFeature {
 
     playDing(){
         // create audio object
-        const audio = new Audio("./resources/audio/ding2.mp3");
+        const audio = new Audio("./resources/audio/ding.mp3");
 
         //play audio
         audio.play().catch(e => {
